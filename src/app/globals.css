@@ -1,0 +1,238 @@
+@import "tailwindcss";
+
+/* ================================================================
+   Ақ-Аянұр — дизайн-жүйе
+   Только светлая тема: правил prefers-color-scheme: dark здесь нет намеренно.
+   ================================================================ */
+
+@theme {
+  --color-cream: #fff9f0;
+  --color-cream-deep: #fbf1e2;
+  --color-card: #ffffff;
+  --color-violet: #9c83dd;
+  --color-violet-deep: #5d45ad;
+  --color-violet-ink: #4a3690;
+  --color-lavender: #ede5ff;
+  --color-lavender-soft: #f5f0ff;
+  --color-sun: #ffd56b;
+  --color-sun-soft: #fff1c9;
+  --color-sun-deep: #8a5d00;
+  --color-mint: #a9d9b0;
+  --color-mint-soft: #e5f5e7;
+  --color-mint-deep: #2f6b3a;
+  --color-peach: #ffb9a5;
+  --color-peach-soft: #ffeae3;
+  --color-peach-deep: #a8432a;
+  --color-rose: #ffe3e8;
+  --color-ink: #302b42;
+  --color-ink-soft: #625d70;
+
+  --font-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-unbounded), var(--font-manrope), ui-sans-serif, sans-serif;
+
+  --radius-blob: 2.25rem;
+  --shadow-soft: 0 10px 30px -12px rgb(74 54 144 / 0.18), 0 2px 6px -2px rgb(48 43 66 / 0.06);
+  --shadow-lift: 0 22px 44px -18px rgb(74 54 144 / 0.32), 0 4px 10px -4px rgb(48 43 66 / 0.08);
+
+  --breakpoint-xs: 22.5rem;
+}
+
+:root {
+  color-scheme: only light;
+  --background: #fff9f0;
+  --foreground: #302b42;
+  --header-height: 64px;
+  --section-pad: clamp(2.5rem, 6vh, 4.5rem);
+  --gutter: 1rem;
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --header-height: 72px;
+    --gutter: 1.5rem;
+  }
+}
+
+html {
+  color-scheme: only light;
+  background-color: #fff9f0;
+  /* Отступ для якорей = фактическая высота шапки (обновляется из JS). */
+  scroll-padding-top: var(--header-height);
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-wrap: break-word;
+}
+
+img,
+video,
+svg {
+  max-width: 100%;
+}
+
+::selection {
+  background: #ffd56b;
+  color: #302b42;
+}
+
+:focus-visible {
+  outline: 3px solid #5d45ad;
+  outline-offset: 3px;
+  border-radius: 10px;
+}
+
+/* ---------- Каркас секций ---------- */
+
+.container-site {
+  width: min(100% - 2 * var(--gutter), 1200px);
+  margin-inline: auto;
+}
+
+.section {
+  position: relative;
+  isolation: isolate;
+  padding-block: var(--section-pad);
+}
+
+/* На десктопе компактные секции занимают ровно один экран под шапкой.
+   min-height (а не height) — если контент больше, секция просто растёт. */
+@media (min-width: 1024px) {
+  .section-screen {
+    min-height: calc(100svh - var(--header-height));
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+}
+
+/* Низкие ноутбуки (1366×768, 1280×720): ужимаем вертикальный ритм. */
+@media (min-width: 1024px) and (max-height: 800px) {
+  :root {
+    --section-pad: clamp(1.75rem, 4.5vh, 2.75rem);
+  }
+}
+
+.display {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.12;
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(1.55rem, 1.1rem + 1.9vw, 2.6rem);
+  line-height: 1.14;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+
+@media (min-width: 1024px) and (max-height: 800px) {
+  .section-title {
+    font-size: clamp(1.55rem, 1rem + 1.5vw, 2.2rem);
+  }
+}
+
+.lead {
+  font-size: clamp(1rem, 0.94rem + 0.3vw, 1.15rem);
+  line-height: 1.6;
+  color: var(--color-ink-soft);
+  text-wrap: pretty;
+}
+
+/* Подчёркивание-«лучик» под словом */
+.sun-underline {
+  position: relative;
+  white-space: nowrap;
+  z-index: 0;
+}
+.sun-underline::after {
+  content: "";
+  position: absolute;
+  left: -0.08em;
+  right: -0.08em;
+  bottom: 0.02em;
+  height: 0.38em;
+  background: #ffd56b;
+  border-radius: 999px 40% 999px 60%;
+  z-index: -1;
+  transform: rotate(-1.5deg);
+}
+
+/* Органическая рамка для фото */
+.blob-frame {
+  border-radius: 46% 54% 42% 58% / 52% 40% 60% 48%;
+}
+.blob-frame-soft {
+  border-radius: 2.5rem 4.5rem 2.5rem 4.5rem;
+}
+
+/* Волна-переход между секциями (рисуется у верхнего края секции) */
+.section-wave {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: clamp(14px, 2.2vw, 32px);
+  transform: translateY(calc(-100% + 1px));
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Декор: никогда не перехватывает клики и не шире экрана */
+.deco {
+  position: absolute;
+  pointer-events: none;
+  user-select: none;
+  z-index: -1;
+}
+
+/* Точечный паттерн */
+.dots-bg {
+  background-image: radial-gradient(circle, currentColor 1.6px, transparent 1.8px);
+  background-size: 14px 14px;
+}
+
+/* Без JS reveal-анимации не должны прятать контент */
+.no-js [data-reveal] {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+/* Блокировка прокрутки фона (меню, lightbox) */
+html.scroll-locked,
+html.scroll-locked body {
+  overflow: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* Скрыть полосу прокрутки в горизонтальных лентах, оставив прокрутку */
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
