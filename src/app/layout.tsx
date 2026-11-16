@@ -1,21 +1,23 @@
 import type { Metadata, Viewport } from "next";
-import { Manrope, Unbounded } from "next/font/google";
+import { Montserrat, Onest } from "next/font/google";
 import { Providers } from "@/components/Providers";
 import { findImage } from "@/lib/media";
 import { seo, siteUrl } from "@/lib/site";
 import "./globals.css";
 
-// cyrillic-ext обязателен: в нём ғ, қ, ң, ә, ө, ү, һ (в базовом cyrillic их нет).
-const manrope = Manrope({
+// Шрифты выбраны по реальному покрытию глифов (проверено по cmap woff2-файлов Google Fonts):
+// у Manrope и Unbounded нет ә, ғ, қ, ң, ұ (у Unbounded — и ө, ү, һ), браузер подставлял
+// системный шрифт, и эти буквы выглядели «заглавными». Onest и Montserrat содержат все
+// казахские буквы: ә ғ қ ң ө ү һ — в cyrillic-ext, ұ і — в cyrillic. Оба сабсета обязательны.
+const onest = Onest({
   subsets: ["latin", "cyrillic", "cyrillic-ext"],
-  variable: "--font-manrope",
+  variable: "--font-onest",
   display: "swap",
 });
 
-const unbounded = Unbounded({
+const montserrat = Montserrat({
   subsets: ["latin", "cyrillic", "cyrillic-ext"],
-  weight: ["500", "600"],
-  variable: "--font-unbounded",
+  variable: "--font-montserrat",
   display: "swap",
 });
 
@@ -52,7 +54,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="kk" className={`no-js ${manrope.variable} ${unbounded.variable}`} suppressHydrationWarning>
+    <html lang="kk" className={`no-js ${onest.variable} ${montserrat.variable}`} suppressHydrationWarning>
       <head>
         <script
           // Убирает .no-js до отрисовки: без JS reveal-анимации не скрывают контент.

@@ -27,8 +27,8 @@
   --color-ink: #302b42;
   --color-ink-soft: #625d70;
 
-  --font-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-unbounded), var(--font-manrope), ui-sans-serif, sans-serif;
+  --font-sans: var(--font-onest), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-montserrat), var(--font-onest), ui-sans-serif, sans-serif;
 
   --radius-blob: 2.25rem;
   --shadow-soft: 0 10px 30px -12px rgb(74 54 144 / 0.18), 0 2px 6px -2px rgb(48 43 66 / 0.06);
