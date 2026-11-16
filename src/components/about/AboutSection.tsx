@@ -30,7 +30,7 @@ export function AboutSection({ media }: { media: MediaAsset | null }) {
           <DecorativeShape variant="star" color="#FFD56B" className="-left-1 -top-2 z-10 size-[clamp(1.75rem,3vw,2.75rem)]" />
           <DecorativeShape variant="ring" color="#9C83DD" className="-bottom-4 -right-2 size-[clamp(3rem,6vw,5rem)] max-sm:hidden" />
           <div className="aspect-[4/3] max-h-[min(calc(100svh-var(--header-height)-9rem),30rem)] w-full overflow-hidden rounded-[2rem_4rem_2rem_4rem] shadow-lift ring-[6px] ring-white sm:aspect-[5/4] lg:aspect-auto lg:h-[min(calc(100svh-var(--header-height)-9rem),30rem)]">
-            <MediaFrame media={media} variant="about" sizes="(min-width: 1024px) 520px, (min-width: 640px) 576px, 100vw" />
+            <MediaFrame media={media} variant="about" position="50% 50%" sizes="(min-width: 1024px) 520px, (min-width: 640px) 576px, 100vw" />
           </div>
         </Reveal>
 

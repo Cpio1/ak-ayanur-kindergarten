@@ -21,7 +21,7 @@ const montserrat = Montserrat({
   display: "swap",
 });
 
-const ogImage = findImage("main-page", "Ақ-Аянұр балабақшасы");
+const ogImage = findImage("main-page", "Ақ-Аянұр балабақшасының ғимараты");
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),

@@ -1,6 +1,6 @@
 import { ArrowRight, ImageIcon } from "lucide-react";
 import { kindergarten } from "@/data/kindergarten";
-import { GALLERY_PREVIEW_COUNT } from "@/data/gallery";
+import { galleryPreviewCount } from "@/data/gallery";
 import type { ImageAsset } from "@/lib/media";
 import { DecorativeShape } from "../ui/DecorativeShape";
 import { InstagramIcon } from "../ui/BrandIcons";
@@ -12,6 +12,7 @@ import { GalleryClient } from "./GalleryClient";
 
 export function GallerySection({ images }: { images: ImageAsset[] }) {
   const has = images.length > 0;
+  const preview = images.slice(0, galleryPreviewCount(images.length));
   return (
     <section id="gallery" aria-labelledby="gallery-title" className={`section bg-cream ${has ? "" : "section-screen"}`}>
       <SectionWave color="#FFF9F0" />
@@ -20,16 +21,19 @@ export function GallerySection({ images }: { images: ImageAsset[] }) {
         <Reveal className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <SectionHeading id="gallery-title" eyebrow="Галерея" tone="mint" title="Біздің галерея" subtitle="Балабақша өмірінен көріністер" />
           {has ? (
-            <PrimaryButton href="/gallery" variant="outline" size="sm" icon={<ArrowRight className="size-4" />} className="hidden shrink-0 flex-row-reverse md:inline-flex">
-              Барлық фотосуреттер
-            </PrimaryButton>
+            // Обёртка: базовый inline-flex кнопки перебивает класс hidden на ней самой.
+            <div className="hidden shrink-0 md:block">
+              <PrimaryButton href="/gallery" variant="outline" size="sm" icon={<ArrowRight className="size-4" />} className="flex-row-reverse">
+                Барлық фотосуреттер ({images.length})
+              </PrimaryButton>
+            </div>
           ) : null}
         </Reveal>
 
         <div className="mt-[clamp(1.25rem,3.5vh,2.25rem)]">
           {has ? (
             <Reveal delay={0.08}>
-              <GalleryClient images={images.slice(0, GALLERY_PREVIEW_COUNT)} mode="preview" />
+              <GalleryClient images={preview} mode="preview" />
             </Reveal>
           ) : (
             <Reveal delay={0.08}>

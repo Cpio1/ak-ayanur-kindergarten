@@ -37,7 +37,7 @@ export function MobileHero({ media }: { media: MediaAsset | null }) {
       <div className="relative mx-auto mt-4 max-w-xl">
         <DecorativeShape variant="petal" color="#A9D9B0" className="-left-1 -top-3 z-10 size-7 rotate-[-25deg]" />
         <div className="h-[clamp(8.5rem,28svh,20rem)] overflow-hidden rounded-[1.75rem_3rem_1.75rem_3rem] shadow-lift ring-4 ring-white">
-          <MediaFrame media={media} variant="hero" priority sizes={HERO_SIZES} />
+          <MediaFrame media={media} variant="hero" position="50% 45%" priority sizes={HERO_SIZES} />
         </div>
         <ul className="relative z-10 -mt-7 grid grid-cols-3 gap-1.5 px-1.5 xs:gap-2 xs:px-2.5">
           {heroStats.map((s, i) => (

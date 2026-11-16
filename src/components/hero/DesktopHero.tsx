@@ -53,6 +53,7 @@ export function DesktopHero({ media }: { media: MediaAsset | null }) {
           <MediaFrame
             media={media}
             variant="hero"
+            position="50% 45%"
             priority
             sizes={HERO_SIZES}
             className="blob-frame-soft"

@@ -13,8 +13,8 @@ import { findImage, findLogo, findMedia, getGalleryImages } from "@/lib/media";
 
 export default function HomePage() {
   // main-page → главный экран; main-page2 (фото или видео) → «Біз туралы». Не путать.
-  const heroMedia = findImage("main-page", "Ақ-Аянұр балабақшасының балалары");
-  const aboutMedia = findMedia("main-page2", "Ақ-Аянұр балабақшасындағы күн");
+  const heroMedia = findImage("main-page", "Ақ-Аянұр балабақшасының түрлі түсті ғимараты мен ауласы");
+  const aboutMedia = findMedia("main-page2", "Ақ-Аянұр балабақшасының жарық әрі жайлы топ бөлмесі");
   const logo = findLogo();
   const gallery = getGalleryImages();
 

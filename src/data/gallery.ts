@@ -1,10 +1,26 @@
 /**
  * Подписи для фотографий галереи (необязательно).
  * Фотографии берутся автоматически из папки /public/gallery
- * (форматы: .jpg, .jpeg, .png, .webp), сортируются по имени файла.
- * Ключ — имя файла, значение — описание для alt.
+ * (форматы: .jpg, .jpeg, .png, .webp). main-page и main-page2 в галерею не попадают —
+ * они используются на главном экране и в разделе «Біз туралы».
+ * Ключ — имя файла, значение — описание для alt и подписи в lightbox.
  */
-export const galleryCaptions: Record<string, string> = {};
+export const galleryCaptions: Record<string, string> = {
+  "image3.jpeg": "Мерекелер мен ертеңгіліктерге арналған зал",
+  "image5.jpeg": "Ойыншықтары мен ойын бұрышы бар топ бөлмесі",
+  "image4.jpeg": "Топ бөлмесі: балаларға арналған үстел мен орындықтар",
+  "image1.jpeg": "Балабақшаның ас үйі",
+  "image2.jpeg": "Ас үйдегі тамақ дайындайтын орын",
+};
 
-/** Сколько фотографий показывать на главной странице. */
-export const GALLERY_PREVIEW_COUNT = 6;
+/** Порядок показа: перечисленные файлы идут первыми, остальные — по имени. */
+export const galleryOrder: string[] = ["image3.jpeg", "image5.jpeg", "image4.jpeg", "image1.jpeg", "image2.jpeg"];
+
+/**
+ * Сколько фотографий показывать на главной: 4–6, и всегда меньше общего числа,
+ * чтобы кнопка «Барлық фотосуреттер» открывала ещё фото. Если фото ≤ 4 — показываем все.
+ */
+export function galleryPreviewCount(total: number) {
+  if (total <= 4) return total;
+  return total >= 7 ? 6 : 4;
+}

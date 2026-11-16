@@ -1,8 +1,9 @@
 import "server-only";
+import crypto from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
 import { imageSize } from "image-size";
-import { galleryCaptions } from "@/data/gallery";
+import { galleryCaptions, galleryOrder } from "@/data/gallery";
 
 // Страницы статические: fs читается только при сборке, трассировка не нужна.
 const PUBLIC_DIR = path.join(/*turbopackIgnore: true*/ process.cwd(), "public");
@@ -54,7 +55,11 @@ function exists(relPath: string) {
   }
 }
 
-const SEARCH_DIRS = ["", "images"];
+// Фото для hero / «Біз туралы» / логотип могут лежать и в /public/gallery.
+const SEARCH_DIRS = ["", "images", "gallery"];
+
+/** Именованные файлы с отдельным местом на сайте — в галерею не попадают. */
+const RESERVED_BASENAMES = new Set(["main-page", "main-page2", "main-page2-poster", "logo", "ak-ayanur-logo"]);
 
 /** Ищет изображение по базовому имени (порядок расширений = приоритет). */
 export function findImage(baseName: string, alt: string): ImageAsset | null {
@@ -102,7 +107,19 @@ export function findLogo(): ImageAsset | null {
   return null;
 }
 
-/** Все фотографии из /public/gallery, отсортированные по имени. */
+function fileHash(relPath: string) {
+  try {
+    return crypto.createHash("sha1").update(fs.readFileSync(path.join(/*turbopackIgnore: true*/ PUBLIC_DIR, relPath))).digest("hex");
+  } catch {
+    return relPath;
+  }
+}
+
+/**
+ * Все фотографии из /public/gallery, кроме main-page / main-page2 / логотипа.
+ * Одинаковые файлы (по содержимому) и одно имя в разных форматах показываются один раз.
+ * Порядок: сначала файлы из galleryOrder, затем остальные по имени.
+ */
 export function getGalleryImages(): ImageAsset[] {
   const dir = path.join(/*turbopackIgnore: true*/ PUBLIC_DIR, "gallery");
   let files: string[] = [];
@@ -111,9 +128,24 @@ export function getGalleryImages(): ImageAsset[] {
   } catch {
     return [];
   }
+  const rank = (f: string) => {
+    const i = galleryOrder.indexOf(f);
+    return i === -1 ? Number.MAX_SAFE_INTEGER : i;
+  };
+  const seenHashes = new Set<string>();
+  const seenNames = new Set<string>();
   return files
     .filter((f) => (IMAGE_EXTS as readonly string[]).includes(path.extname(f).toLowerCase()))
-    .sort((a, b) => a.localeCompare(b, "en", { numeric: true }))
+    .filter((f) => !RESERVED_BASENAMES.has(path.parse(f).name.toLowerCase()))
+    .sort((a, b) => rank(a) - rank(b) || a.localeCompare(b, "en", { numeric: true }))
+    .filter((f) => {
+      const name = path.parse(f).name.toLowerCase();
+      const hash = fileHash(path.join("gallery", f));
+      if (seenNames.has(name) || seenHashes.has(hash)) return false;
+      seenNames.add(name);
+      seenHashes.add(hash);
+      return true;
+    })
     .map((f, i) =>
       readImage(
         path.join("gallery", f),
